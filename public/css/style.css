@@ -1,0 +1,36 @@
+
+.center-single-div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.navbar{
+    padding: 0;
+}
+.container-navbar{
+    padding-left:10px;
+    padding-right:10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+.container-navbar>#navbarNav>.navbar-nav{
+    display: flex;
+    flex-direction: row;
+}
+.container-navbar>#navbarNav>.navbar-nav>*{
+    margin: 5px;
+}
+.form-group>.text-center{
+    margin-top:20px;
+}
+.nav-link{
+    padding: 0;
+}
+.container-navbar>.nav-time{
+    padding-bottom: .3125rem;
+}
+.main-container{
+    min-height: calc(100vh - 125px);
+}

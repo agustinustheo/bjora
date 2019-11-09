@@ -12,5 +12,20 @@
 */
 
 Route::get('/', function () {
+    Route::middleware('session.has.user')->group(function () {
+        return redirect('welcome');
+    });
+    return redirect('login');
+});
+
+Route::get('/login', function () {
+    return view('auth.login');
+});
+
+Route::get('/register', function () {
+    return view('auth.register');
+});
+
+Route::get('/welcome', function () {
     return view('welcome');
 });
