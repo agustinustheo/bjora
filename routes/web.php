@@ -18,13 +18,8 @@ Route::get('/', function () {
     return redirect('login');
 });
 
-Route::get('/login', function () {
-    return view('auth.login');
-});
-
-Route::get('/register', function () {
-    return view('auth.register');
-});
+Route::get('/login', "AuthController@login");
+Route::get('/register', "AuthController@register");
 
 Route::get('/welcome', function () {
     return view('welcome');
