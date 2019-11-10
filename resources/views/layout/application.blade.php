@@ -6,6 +6,7 @@
         <title>{{ config('app.name') }}</title>
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous">
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link rel="stylesheet" href="{{ URL::asset('css/style.css') }}" />
@@ -14,7 +15,7 @@
         <nav class="bg-dark">
             <div class="container-navbar">
                 <div class="navbar-header">
-                    <span class="navbar-brand text-danger">Bjora</span>
+                    <a class="navbar-brand text-danger navbar-link" href="/">Bjora</a>
                 </div>
                 <div id="navbarNav">
                     <ul class="navbar-nav navbar-align-right">
@@ -29,7 +30,7 @@
             </div>
             <div class="container-navbar">
                 <div class="navbar-header nav-time">
-                    <span class="text-light" id="time">00:00:00</span>
+                    <span class="text-light" id="time"><?php echo date('Y-m-d H:i:s'); ?></span>
                 </div>
             </div>
         </nav>
@@ -38,11 +39,12 @@
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="{{ URL::asset('js/application.js') }}"></script>
         <div class="container main-container">
             @yield('content')
         </div>
         <footer class="page-footer bg-dark text-center p-3">
-            <span class="text-light">©️&nbsp;2019&nbsp;Copyright&nbsp;<span class="text-danger">Bjora.com</span></span>
+            <span class="text-light">©️&nbsp;2019&nbsp;Copyright&nbsp;<a class="text-danger footer-link" href="/">Bjora.com</a></span>
         </footer>
     </body>
 </html>
