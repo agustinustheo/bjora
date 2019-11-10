@@ -34,3 +34,19 @@
 .main-container{
     min-height: calc(100vh - 125px);
 }
+.display-picture{
+    width: 60px;
+    height: 60px;
+}
+.form-control.search-input{
+    width: 220px;
+    flex: none;
+    font-size: 10pt;
+}
+.search-input:focus{
+    border-color: #ced4da;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0) ;
+}
+.footer-link:hover, .navbar-brand.navbar-link:hover{
+    color: #dc3545;
+}
