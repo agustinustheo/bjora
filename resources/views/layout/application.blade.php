@@ -12,11 +12,32 @@
         <link rel="stylesheet" href="{{ URL::asset('css/style.css') }}" />
     </head>
     <body>
-        <nav class="bg-dark">
+        <nav class="bg-dark p-1">
             <div class="container-navbar">
-                <div class="navbar-header">
+                <div class="navbar-header d-flex align-items-center">
                     <a class="navbar-brand text-danger navbar-link" href="/">Bjora</a>
+                    @if(session()->has('user'))
+                    <a class="nav-link text-light d-block mt-1 mr-3" href="/question">My Question</a>
+                    <a class="nav-link text-light d-block mt-1 mr-3" href="/inbox">Inbox</a>
+                    @endif
                 </div>
+                @if(session()->has('user'))
+                <div id="navbarNav">
+                    <ul class="navbar-nav navbar-align-right">
+                        <li class="nav-item active">
+                            <a class="btn btn-danger text-white nav-btn" href="/question/add">
+                                Add Question
+                            </a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link text-light" href="/profile">Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" href="/logout">Log Out</a>
+                        </li>
+                    </ul>
+                </div>
+                @else 
                 <div id="navbarNav">
                     <ul class="navbar-nav navbar-align-right">
                         <li class="nav-item active">
@@ -27,6 +48,7 @@
                         </li>
                     </ul>
                 </div>
+                @endif
             </div>
             <div class="container-navbar">
                 <div class="navbar-header nav-time">

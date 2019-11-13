@@ -12,25 +12,27 @@
             </div>
         </form>
         <div>
+            @foreach($Questions as $value)
             <div class="border rounded p-3">
-                <span class="text-muted">Finance</span>
-                <h3>What is the greatest paradox of becoming wealthy?</h3>
+                <span class="text-muted">{{ $value->topic_name }}</span>
+                <h3>{{ $value->question }}</h3>
                 <div class="d-flex align-items-center">
                     <div class="rounded-circle bg-dark display-picture">
-
+                        <img src="{{ URL::asset('img/'.$value->profile_picture) }}">
                     </div>
                     <div class="ml-2">
-                        <div class="text-danger">Abraham Lincoln</div>
+                        <div class="text-danger">{{ $value->user_name }}</div>
                         <div>
                             <span class="font-weight-bold text-dark">Created At:</span>
-                            <span class="text-muted"><?php echo date('Y-m-d H:i:s'); ?></span>
+                            <span class="text-muted">{{ $value->created_at }}</span>
                         </div>
                     </div>
                 </div>
-                <div class="btn btn-danger text-white mt-2">
+                <button class="btn btn-danger text-white mt-2">
                     Answer
-                </div>
+                </button>
             </div>
+            @endforeach
         </div>
         <nav aria-label="Page navigation example" class="mt-3">
             <ul class="pagination justify-content-center">

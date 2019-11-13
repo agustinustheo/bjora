@@ -2,17 +2,18 @@
 @section('content')
     <div class="center-single-div pt-5 pb-5">
         <div class="container col-md-6 bg-light rounded">
-            <form class="form-group" method="POST" action="/login">
+            <form class="form-group" method="POST" action="/question/add">
                 {{ csrf_field() }}
-                <h2 class="text-center">Log In</h2>
+                <h2 class="text-center">Add Question</h2>
                 <div class="input-group p-2">
-                    <input type="text" class="form-control" placeholder="Email" name="email">
+                    <textarea class="form-control" placeholder="Question" name="question" rows="3"></textarea>
                 </div>
                 <div class="input-group p-2">
-                    <input type="password" class="form-control" placeholder="Password" name="password">
-                </div>
-                <div class="input-group px-2">
-                    <label><input type="checkbox"> Remember me</label>
+                    <select class="form-control" placeholder="Topic" name ="topic">
+                        @foreach($Topics as $value)
+                        <option value="{{ $value->id }}">{{ $value->name }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="input-group p-2">
                     <input type="submit" class="btn btn-danger login-btn btn-block">

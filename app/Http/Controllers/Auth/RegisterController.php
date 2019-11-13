@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
+use DB;
+use DateTime;
+use Redirect;
 use App\User;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -28,7 +32,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -46,12 +50,16 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    protected function validator(array $data)
+    protected function validator(Array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:100'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:6', 'confirmed'],
+            'gender' => ['required', 'integer'],
+            'address' => ['required', 'string'],
+            'profile_picture' => ['required', 'string'],
+            'birthday' => ['required', 'date'],
         ]);
     }
 
@@ -61,12 +69,37 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\User
      */
-    protected function create(array $data)
+    protected function create(Array $data)
     {
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'role' => 2,
             'password' => Hash::make($data['password']),
+            'gender' => $data['gender'],
+            'address' => $data['address'],
+            'profile_picture' => $data['profile_picture'],
+            'birthday' => $data['birthday'],
         ]);
+    }
+
+    protected function register(Request $request){
+        $data = $request->all();
+        $data['birthday'] = \DateTime::createFromFormat('d/m/Y', $data['birthday']);
+        $validation = $this->validator($data);
+        if($validation->fails()) {
+            return Redirect::back()->withErrors($validation);
+        }
+        else{
+            $user = $this->create($data);
+            $user_data = DB::table('users')->where('email', $data['email']);
+            session(['user' => $user_data->value('id')]);
+            session(['name' =>  $user_data->value('name')]);
+            return redirect('/');
+        }
+    }
+
+    public function register_view(){
+        return view('auth.register');
     }
 }
