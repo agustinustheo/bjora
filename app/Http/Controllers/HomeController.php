@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use DB;
+use App\Question;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
     public function index(){
-        $question_data = DB::table('questions')->get();
+        $question_data = Question::paginate(10);
         $topic_data = DB::table('topics')->get();
         foreach($question_data as $value){
             $value->user_name = DB::table('users')->where('id', $value->user_id)->value('name');

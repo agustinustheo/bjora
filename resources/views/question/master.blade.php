@@ -53,22 +53,6 @@
                 @endforeach
             </tbody>
         </table>
-        <nav aria-label="Page navigation example" class="mt-3">
-            <ul class="pagination justify-content-center">
-                <li class="page-item">
-                <a class="page-link text-muted" href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                </li>
-                <li class="page-item"><a class="page-link text-danger" href="#">1</a></li>
-                <li class="page-item">
-                <a class="page-link text-muted" href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                    <span class="sr-only">Next</span>
-                </a>
-                </li>
-            </ul>
-        </nav>
+        {{ $Questions->links() }}
     </div>
 @endsection

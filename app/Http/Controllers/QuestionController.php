@@ -62,7 +62,7 @@ class QuestionController extends Controller
     }
     
     protected function master_view(Request $request){
-        $question_data = DB::table('questions')->get();
+        $question_data = Question::paginate(10);
         $topic_data = DB::table('topics')->get();
         foreach($question_data as $value){
             $value->user_name = DB::table('users')->where('id', $value->user_id)->value('name');
