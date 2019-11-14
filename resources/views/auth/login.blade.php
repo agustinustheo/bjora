@@ -12,7 +12,7 @@
                     <input type="password" class="form-control" placeholder="Password" name="password">
                 </div>
                 <div class="input-group px-2">
-                    <label><input type="checkbox"> Remember me</label>
+                    <label><input type="checkbox" name="remember"> Remember me</label>
                 </div>
                 <div class="input-group p-2">
                     <input type="submit" class="btn btn-danger login-btn btn-block">

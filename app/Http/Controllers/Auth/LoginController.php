@@ -40,13 +40,15 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest', ['except' => [
-            'login_view', 'login' , 'logout'
+            'logout',
         ]]);
     }
 
     protected function login(Request $request){
         $credentials = $request->only('email', 'password');
-        if(Auth::attempt($credentials)) {
+        $remember=False;
+        if($request->only('remember')!=null) $remember=True;
+        if(Auth::attempt($credentials, $remember)) {
             $user_data = DB::table('users')->where('email', $request->only('email'));
             session(['user' => $user_data->value('id')]);
             session(['name' =>  $user_data->value('name')]);
