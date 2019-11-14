@@ -13,7 +13,7 @@
         </form>
         <div>
             @foreach($Questions as $value)
-            <div class="border rounded p-3">
+            <div class="border rounded p-3 mb-3">
                 <span class="text-muted">{{ $value->topic_name }}</span>
                 <h3>{{ $value->question }}</h3>
                 <div class="d-flex align-items-center">
@@ -28,9 +28,9 @@
                         </div>
                     </div>
                 </div>
-                <button class="btn btn-danger text-white mt-2">
+                <a class="btn btn-danger text-white mt-2" href="/answer/{{$value->id}}">
                     Answer
-                </button>
+                </a>
             </div>
             @endforeach
         </div>

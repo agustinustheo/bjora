@@ -5,13 +5,14 @@
             <form class="form-group" method="POST" action="/question/edit">
                 {{ csrf_field() }}
                 <h2 class="text-center">Edit Question</h2>
+                <input type="hidden" class="form-control" name="id" value="{{ $Question->id }}">
                 <div class="input-group p-2">
-                    <textarea class="form-control" placeholder="Question" name="question" rows="3"></textarea>
+                    <textarea class="form-control" placeholder="Question" name="question" rows="3">{{ $Question->question }}</textarea>
                 </div>
                 <div class="input-group p-2">
                     <select class="form-control" placeholder="Topic" name ="topic">
                         @foreach($Topics as $value)
-                        <option value="{{ $value->id }}">{{ $value->name }}</option>
+                        <option value="{{ $value->id }}" {{ $Question->topic_id === $value->id ? "selected='selected'" : "" }}>{{ $value->name }}</option>
                         @endforeach
                     </select>
                 </div>

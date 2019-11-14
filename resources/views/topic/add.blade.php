@@ -6,7 +6,7 @@
                 {{ csrf_field() }}
                 <h2 class="text-center">Add Topic</h2>
                 <div class="input-group p-2">
-                    <input type="text" class="form-control" placeholder="Topic" name="topic">
+                    <input type="text" class="form-control" placeholder="Topic" name="name">
                 </div>
                 <div class="input-group p-2">
                     <input type="submit" class="btn btn-danger login-btn btn-block">

@@ -65,7 +65,7 @@
         <div class="container main-container">
             @yield('content')
         </div>
-        <footer class="page-footer bg-dark text-center p-3">
+        <footer class="page-footer bg-dark text-center p-3 mt-4">
             <span class="text-light">©️&nbsp;2019&nbsp;Copyright&nbsp;<a class="text-danger footer-link" href="/">Bjora.com</a></span>
         </footer>
     </body>

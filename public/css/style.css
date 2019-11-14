@@ -61,3 +61,6 @@
     padding-left: 7px;
     padding-right: 7px;
 }
+.answer-delete:hover{
+    text-decoration: none;
+}
