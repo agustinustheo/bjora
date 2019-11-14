@@ -34,10 +34,10 @@ class QuestionController extends Controller
         $question = Question::find($request->segment(3));
         $update=1;
         if($question->status==1) $update=0;
-        Question::whereId($request->only('id'))->update([
+        Question::whereId($request->segment(3))->update([
             'status' => $update,
         ]);
-        return redirect('/');
+        return Redirect::back();
     }
 
     protected function delete(Request $request){
@@ -62,7 +62,15 @@ class QuestionController extends Controller
     }
     
     protected function master_view(Request $request){
-        return view('question.master');
+        $question_data = DB::table('questions')->get();
+        $topic_data = DB::table('topics')->get();
+        foreach($question_data as $value){
+            $value->user_name = DB::table('users')->where('id', $value->user_id)->value('name');
+            $value->topic_name = DB::table('topics')->where('id', $value->topic_id)->value('name');
+        }
+        return view('question.master')->with([
+            'Questions'=> $question_data,
+        ]);
     }
 
     protected function answer_view(Request $request){

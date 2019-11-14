@@ -1,6 +1,6 @@
 @extends('layout.application')
 @section('content')
-    <div class="mt-4">
+    <div class="pt-5">
         <a class="btn btn-danger text-white p-1" href="/question/add">
             Add Question
         </a>
@@ -9,30 +9,66 @@
             <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">First</th>
-                    <th scope="col">Last</th>
-                    <th scope="col">Handle</th>
+                    <th scope="col">Topic</th>
+                    <th scope="col">Owner</th>
+                    <th scope="col">Question</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Action</th>
                 </tr>
             </thead>
             <tbody>
+                @foreach($Questions as $value)
                 <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
+                    <th scope="row">{{ $loop->index+1 }}</th>
+                    <td>
+                        {{ $value->topic_name }}
+                    </td>
+                    <td>
+                        {{ $value->user_name }}
+                    </td>
+                    <td>
+                        <a class="text-danger" href="/answer/{{$value->id}}">
+                            {{ $value->question }}
+                        </a>
+                    </td>
+                    <td>
+                        @if($value->status==1)
+                            <span class="d-block bg-success text-white rounded p-1 ml-1">Open</span>
+                        @else
+                            <span class="d-block bg-warning rounded p-1 ml-1">Closed</span>
+                        @endif
+                    </td>
+                    <td>
+                        <div class="d-flex">
+                            @if($value->status==1)
+                                <a class="d-block bg-secondary text-white rounded p-1 ml-1 answer-delete" href="/question/status/{{ $value->id }}">Closed</a>
+                            @else
+                                <a class="d-block bg-success text-white rounded p-1 ml-1 answer-delete" href="/question/status/{{ $value->id }}">Open</a>
+                            @endif
+                            <a class="d-block bg-warning rounded text-dark p-1 ml-1 answer-delete" href="/question/edit/{{ $value->id }}">Edit</a>
+                            <a class="d-block bg-danger text-white rounded p-1 ml-1 answer-delete" href="/question/delete/{{ $value->id }}">Delete</a>
+                        </div>
+                    </td>
                 </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td colspan="2">Larry the Bird</td>
-                    <td>@twitter</td>
-                </tr>
+                @endforeach
             </tbody>
         </table>
+        <nav aria-label="Page navigation example" class="mt-3">
+            <ul class="pagination justify-content-center">
+                <li class="page-item">
+                <a class="page-link text-muted" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                </li>
+                <li class="page-item"><a class="page-link text-danger" href="#">1</a></li>
+                <li class="page-item">
+                <a class="page-link text-muted" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                </a>
+                </li>
+            </ul>
+        </nav>
     </div>
 @endsection
