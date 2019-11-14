@@ -37,7 +37,9 @@
                         </div>
                     </div>
                 </div>
+                @if ($Question->status==1)
                 <a class="d-block bg-danger text-white rounded p-1 ml-1 answer-delete" href="/answer/delete/{{ $value->id }}">Delete</a>
+                @endif
             </div>
             <p class="mt-2">
                 {{ $value->answer }}
@@ -45,6 +47,7 @@
         </div>
         @endforeach
     </div>
+    @if ($Question->status==1)
     <form class="border border-top-0 rounded-bottom pt-3 pr-3 pl-3 pb-2" method="POST" action="/answer/add">
         {{ csrf_field() }}
         <input type="hidden" class="form-control" name="question_id" value="{{ $Question->id }}">
@@ -55,4 +58,5 @@
             <input type="submit" class="btn btn-danger text-white" value="Answer">
         </div>
     </form>
+    @endif
 @endsection
