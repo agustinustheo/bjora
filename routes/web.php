@@ -39,6 +39,7 @@ Route::get('/topic/edit/{id}', "TopicController@edit_view");
 Route::post('/topic/edit', "TopicController@edit");
 
 Route::get('/', "HomeController@index");
+Route::get('/search', "HomeController@search");
 
 Route::get('/home', function () {
     return redirect('/');

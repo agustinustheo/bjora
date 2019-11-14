@@ -1,14 +1,14 @@
 @extends('layout.application')
 @section('content')
     <div class="col-md-10 mx-auto">
-        <form class="form-group mt-4 mb-3">
+        <form class="form-group mt-4 mb-3" method="GET" action="/search">
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text bg-white lighten-3 p-2" id="basic-text1">
                         <i class="fas fa-search text-muted" aria-hidden="true"></i>
                     </span>
                 </div>
-                <input type="text" class="form-control border-left-0 search-input" placeholder="Search by Question or Username">
+                <input type="text" class="form-control border-left-0 search-input" placeholder="Search by Question or Username" name="query">
             </div>
         </form>
         <div>
