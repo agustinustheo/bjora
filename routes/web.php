@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/login', "Auth\LoginController@login_view");
+Route::get('/login', [ 'as' => 'login', 'uses' => "Auth\LoginController@login_view"]);
 Route::post('/login', "Auth\LoginController@login");
 Route::get('/logout', "Auth\LoginController@logout");
 Route::get('/register', "Auth\RegisterController@register_view");
@@ -28,6 +28,8 @@ Route::get('/question/master', "QuestionController@master_view");
 
 Route::get('/answer/{id}', "QuestionController@answer_view");
 Route::post('/answer/add', "QuestionController@add_answer");
+Route::get('/answer/edit/{id}', "QuestionController@edit_answer_view");
+Route::post('/answer/edit', "QuestionController@edit_answer");
 
 Route::get('/answer/delete/{id}', "QuestionController@delete_answer");
 Route::get('/topic', "TopicController@topic_view");
@@ -39,5 +41,5 @@ Route::post('/topic/edit', "TopicController@edit");
 Route::get('/', "HomeController@index");
 
 Route::get('/home', function () {
-    return view('/');
+    return redirect('/');
 });

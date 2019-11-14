@@ -7,9 +7,31 @@ use Redirect;
 use App\Answer;
 use App\Question;
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class QuestionController extends Controller
 {
+    use AuthenticatesUsers;
+
+    /**
+     * Where to redirect users after login.
+     *
+     * @var string
+     */
+    protected $redirectTo = '/';
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth', ['except' => [
+            'answer_view',
+        ]]);
+    }
+
     protected function add(Request $request){
         $request = $request->all();
         Question::create([
@@ -78,15 +100,23 @@ class QuestionController extends Controller
         $question_data->user_name = DB::table('users')->where('id', $question_data->user_id)->value('name');
         $question_data->profile_picture = DB::table('users')->where('id', $question_data->user_id)->value('profile_picture');
         $question_data->topic_name = DB::table('topics')->where('id', $question_data->topic_id)->value('name');
-        $answer_data = DB::table('answers')->get();
-        foreach($answer_data as $value){
-            $value->user_name = DB::table('users')->where('id', $value->user_id)->value('name');
-            $value->profile_picture = DB::table('users')->where('id', $value->user_id)->value('profile_picture');
+        $answer_data = DB::table('answers')->where('question_id', $request->segment(2));
+        $answer_data = $answer_data->get();
+        if($answer_data->count()>0){
+            foreach($answer_data as $value){
+                $value->user_name = DB::table('users')->where('id', $value->user_id)->value('name');
+                $value->profile_picture = DB::table('users')->where('id', $value->user_id)->value('profile_picture');
+            }
         }
         return view('question.answer')->with([
             'Question'=> $question_data,
             'Answers'=> $answer_data,
         ]);
+    }
+    
+    protected function edit_answer_view(Request $request){
+        $answer_data = DB::table('answers')->where('id', $request->segment(3))->first();
+        return view('question.edit_answer')->with(['Answer'=>$answer_data]);
     }
 
     protected function add_answer(Request $request){
@@ -97,6 +127,15 @@ class QuestionController extends Controller
             'user_id' => session('user'),
         ]);
         return Redirect::back();
+    }
+
+    protected function edit_answer(Request $request){
+        $data = $request->all();
+        Answer::whereId($request->only('id'))->update([
+            'answer' => $data['answer'],
+        ]);
+        $question_id = Answer::where('id', $request->only('id'))->value('question_id');
+        return redirect("/answer/".$question_id);
     }
 
     protected function delete_answer(Request $request){

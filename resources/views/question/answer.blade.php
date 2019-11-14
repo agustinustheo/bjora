@@ -23,31 +23,36 @@
                 </div>
             </div>
         </div>
-        @foreach($Answers as $value)
-        <div class="border rounded p-3 m-2">
-            <div class="d-flex align-items-center justify-content-between">
-                <div class="d-flex align-items-center">
-                    <div class="rounded-circle bg-dark display-picture">
-                        <img src="{{ URL::asset('img/'.$value->profile_picture) }}">
-                    </div>
-                    <div class="ml-2">
-                        <div class="text-danger">{{ $value->user_name }}</div>
-                        <div>
-                            <span class="text-muted">Answered At: {{ $value->created_at }}</span>
+        @if($Answers->count()>0)
+            @foreach($Answers as $value)
+            <div class="border rounded p-3 m-2">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <div class="rounded-circle bg-dark display-picture">
+                            <img src="{{ URL::asset('img/'.$value->profile_picture) }}">
+                        </div>
+                        <div class="ml-2">
+                            <div class="text-danger">{{ $value->user_name }}</div>
+                            <div>
+                                <span class="text-muted">Answered At: {{ $value->created_at }}</span>
+                            </div>
                         </div>
                     </div>
+                    @if ($Question->status==1  && session()->has('user')  && Session::get('user')==$value->user_id)
+                    <div class="d-flex">
+                        <a class="d-block bg-warning text-dark rounded p-1 ml-1 answer-delete pl-2 pr-2" href="/answer/edit/{{ $value->id }}">Edit</a>
+                        <a class="d-block bg-danger text-white rounded p-1 ml-1 answer-delete" href="/answer/delete/{{ $value->id }}">Delete</a>
+                    </div>
+                    @endif
                 </div>
-                @if ($Question->status==1)
-                <a class="d-block bg-danger text-white rounded p-1 ml-1 answer-delete" href="/answer/delete/{{ $value->id }}">Delete</a>
-                @endif
+                <p class="mt-2">
+                    {{ $value->answer }}
+                </p>
             </div>
-            <p class="mt-2">
-                {{ $value->answer }}
-            </p>
-        </div>
-        @endforeach
+            @endforeach
+        @endif
     </div>
-    @if ($Question->status==1)
+    @if ($Question->status==1 && session()->has('user'))
     <form class="border border-top-0 rounded-bottom pt-3 pr-3 pl-3 pb-2" method="POST" action="/answer/add">
         {{ csrf_field() }}
         <input type="hidden" class="form-control" name="question_id" value="{{ $Question->id }}">
