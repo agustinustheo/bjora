@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use DB;
 use Redirect;
+use App\User;
+use App\Topic;
 use App\Answer;
 use App\Question;
 use Illuminate\Http\Request;
@@ -73,22 +75,22 @@ class QuestionController extends Controller
     }
     
     protected function add_view(){
-        $data = DB::table('topics')->get();
+        $data = Topic::all();
         return view('question.add')->with(['Topics'=>$data]);
     }
     
     protected function edit_view(Request $request){
-        $data = DB::table('topics')->get();
-        $question_data = DB::table('questions')->where('id', $request->segment(3))->first();
+        $data = Topic::all();
+        $question_data = Question::where('id', $request->segment(3))->first();
         return view('question.edit')->with(['Topics'=>$data, 'Question'=>$question_data]);
     }
     
     protected function master_view(Request $request){
         $question_data = Question::paginate(10);
-        $topic_data = DB::table('topics')->get();
+        $topic_data = Topic::all();
         foreach($question_data as $value){
-            $value->user_name = DB::table('users')->where('id', $value->user_id)->value('name');
-            $value->topic_name = DB::table('topics')->where('id', $value->topic_id)->value('name');
+            $value->user_name = User::where('id', $value->user_id)->value('name');
+            $value->topic_name = Topic::where('id', $value->topic_id)->value('name');
         }
         return view('question.master')->with([
             'Questions'=> $question_data,
@@ -96,16 +98,16 @@ class QuestionController extends Controller
     }
 
     protected function answer_view(Request $request){
-        $question_data = DB::table('questions')->where('id', $request->segment(2))->first();
-        $question_data->user_name = DB::table('users')->where('id', $question_data->user_id)->value('name');
-        $question_data->profile_picture = DB::table('users')->where('id', $question_data->user_id)->value('profile_picture');
-        $question_data->topic_name = DB::table('topics')->where('id', $question_data->topic_id)->value('name');
-        $answer_data = DB::table('answers')->where('question_id', $request->segment(2));
+        $question_data = Question::where('id', $request->segment(2))->first();
+        $question_data->user_name = User::where('id', $question_data->user_id)->value('name');
+        $question_data->profile_picture = User::where('id', $question_data->user_id)->value('profile_picture');
+        $question_data->topic_name = Topic::where('id', $question_data->topic_id)->value('name');
+        $answer_data = Answer::where('question_id', $request->segment(2));
         $answer_data = $answer_data->get();
         if($answer_data->count()>0){
             foreach($answer_data as $value){
-                $value->user_name = DB::table('users')->where('id', $value->user_id)->value('name');
-                $value->profile_picture = DB::table('users')->where('id', $value->user_id)->value('profile_picture');
+                $value->user_name = User::where('id', $value->user_id)->value('name');
+                $value->profile_picture = User::where('id', $value->user_id)->value('profile_picture');
             }
         }
         return view('question.answer')->with([
@@ -115,7 +117,7 @@ class QuestionController extends Controller
     }
     
     protected function edit_answer_view(Request $request){
-        $answer_data = DB::table('answers')->where('id', $request->segment(3))->first();
+        $answer_data = Answer::where('id', $request->segment(3))->first();
         return view('question.edit_answer')->with(['Answer'=>$answer_data]);
     }
 

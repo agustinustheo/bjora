@@ -9,6 +9,8 @@ use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -85,6 +87,7 @@ class RegisterController extends Controller
 
     protected function register(Request $request){
         $data = $request->all();
+        $data['profile_picture'] = $data['email'].'/'.$data['profile_picture'];
         $data['birthday'] = \DateTime::createFromFormat('d/m/Y', $data['birthday']);
         $validation = $this->validator($data);
         if($validation->fails()) {
@@ -92,10 +95,16 @@ class RegisterController extends Controller
         }
         else{
             $user = $this->create($data);
-            $user_data = DB::table('users')->where('email', $data['email']);
-            session(['user' => $user_data->value('id')]);
-            session(['name' =>  $user_data->value('name')]);
-            return redirect('/');
+            $file = $request->file('profile_picture');  
+            $filename = $data['email'].'-'.time().'-'.$file->getClientOriginalName();
+            $file->storeAs('img/profile_picture', $filename);
+            $credentials = $request->only('email', 'password');
+            if(Auth::attempt($credentials)) {
+                $user_data = User::where('email', $request->only('email'));
+                session(['user' => $user_data->value('id')]);
+                session(['name' =>  $user_data->value('name')]);
+                return redirect('/');
+            }
         }
     }
 

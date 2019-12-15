@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use DB;
 use Redirect;
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -49,7 +50,7 @@ class LoginController extends Controller
         $remember=False;
         if($request->only('remember')!=null) $remember=True;
         if(Auth::attempt($credentials, $remember)) {
-            $user_data = DB::table('users')->where('email', $request->only('email'));
+            $user_data = User::where('email', $request->only('email'));
             session(['user' => $user_data->value('id')]);
             session(['name' =>  $user_data->value('name')]);
             return redirect('/');

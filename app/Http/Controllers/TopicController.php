@@ -48,7 +48,7 @@ class TopicController extends Controller
     }
     
     public function edit_view(Request $request){
-        $data = DB::table('topics')->where('id', $request->segment(3))->first();
+        $data = Topic::where('id', $request->segment(3))->first();
         return view('topic.edit')->with('Topic', $data);
     }
 }
