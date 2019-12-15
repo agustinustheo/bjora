@@ -2,7 +2,7 @@
 @section('content')
     <div class="center-single-div pt-3 pb-3">
         <div class="container col-md-6 bg-light rounded">
-            <form class="form-group" method="POST" action="/register">
+            <form class="form-group" method="POST" action="/register" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <h2 class="text-center">Register</h2>
                 @if ($errors->any())

@@ -13,7 +13,7 @@
         <h3>{{ $Question->question }}</h3>
         <div class="d-flex align-items-center mb-3">
             <div class="rounded-circle bg-dark display-picture">
-                <img src="{{ URL::asset('img/'.$Question->profile_picture) }}">
+                <img src="{{ URL::asset($Question->profile_picture) }}">
             </div>
             <div class="ml-2">
                 <div class="text-danger">{{ $Question->user_name }}</div>
@@ -29,7 +29,7 @@
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center">
                         <div class="rounded-circle bg-dark display-picture">
-                            <img src="{{ URL::asset('img/'.$value->profile_picture) }}">
+                            <img src="{{ URL::asset($value->profile_picture) }}">
                         </div>
                         <div class="ml-2">
                             <div class="text-danger">{{ $value->user_name }}</div>
