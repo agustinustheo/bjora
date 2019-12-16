@@ -87,17 +87,17 @@ class RegisterController extends Controller
 
     protected function register(Request $request){
         $data = $request->all();
-        $data['profile_picture'] = $data['email'].'/'.$data['profile_picture'];
         $data['birthday'] = \DateTime::createFromFormat('d/m/Y', $data['birthday']);
         $validation = $this->validator($data);
         if($validation->fails()) {
             return Redirect::back()->withErrors($validation);
         }
         else{
-            $user = $this->create($data);
             $file = $request->file('profile_picture');  
             $filename = $data['email'].'-'.time().'-'.$file->getClientOriginalName();
             $file->storeAs('img/profile_picture', $filename);
+            $data['profile_picture'] = 'storage/img/profile_picture/'.$filename;
+            $user = $this->create($data);
             $credentials = $request->only('email', 'password');
             if(Auth::attempt($credentials)) {
                 $user_data = User::where('email', $request->only('email'));
