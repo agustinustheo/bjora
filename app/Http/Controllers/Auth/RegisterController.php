@@ -60,7 +60,7 @@ class RegisterController extends Controller
             'password' => ['required', 'string', 'min:6', 'confirmed'],
             'gender' => ['required', 'integer'],
             'address' => ['required', 'string'],
-            'profile_picture' => ['required', 'string'],
+            'profile_picture' => ['required'],
             'birthday' => ['required', 'date'],
         ]);
     }
@@ -95,18 +95,18 @@ class RegisterController extends Controller
         else{
             $file = $request->file('profile_picture');  
             $filename = $data['email'].'-'.time().'-'.$file->getClientOriginalName();
-            $file->storeAs('img/profile_picture', $filename);
+            $file->storeAs('public/img/profile_picture', $filename);
             $data['profile_picture'] = 'storage/img/profile_picture/'.$filename;
             $user = $this->create($data);
             $credentials = $request->only('email', 'password');
             if(Auth::attempt($credentials)) {
                 $user_data = User::where('email', $request->only('email'));
-                return redirect('/')->withCookie(cookie('user_cookie', $user_data->id, 120));
+                return redirect('/')->withCookie(cookie('user_cookie', $user_data->value('id'), 120));
             }
         }
     }
 
-    public function register_view(){
+    public function register_view(Request $request){
         if($request->hasCookie('user_cookie')){
             return Redirect::back();
         }

@@ -64,3 +64,6 @@
 .answer-delete:hover{
     text-decoration: none;
 }
+.text-danger-size{
+    font-size: 10pt;
+}

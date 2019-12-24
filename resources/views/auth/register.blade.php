@@ -5,23 +5,21 @@
             <form class="form-group" method="POST" action="/register" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <h2 class="text-center">Register</h2>
-                @if ($errors->any())
-                    <div>
-                        {{ implode('', $errors->all(':message')) }}
-                    </div>
-                @endif
                 <div class="input-group p-2">
-                    <input type="text" class="form-control" name="name" placeholder="Fullname">
+                    <input type="text" class="form-control {{ $errors->has('name') ? 'is-invalid' : ''}}" name="name" placeholder="Fullname">
+                </div>
+                {!! $errors->first('name', '<span class="text-danger pl-2 text-danger-size">:message</span>') !!}
+                <div class="input-group p-2">
+                    <input type="text" class="form-control {{ $errors->has('email') ? 'is-invalid' : ''}}" name="email" placeholder="Email">
+                </div>
+                {!! $errors->first('email', '<span class="text-danger pl-2 text-danger-size">:message</span>') !!}
+                <div class="input-group p-2">
+                    <input type="password" class="form-control {{ $errors->has('password') ? 'is-invalid' : ''}}" name="password" placeholder="Password">
                 </div>
                 <div class="input-group p-2">
-                    <input type="text" class="form-control" name="email" placeholder="Email">
+                    <input type="password" class="form-control {{ $errors->has('password') ? 'is-invalid' : ''}}" name="password_confirmation" placeholder="Confirm Password">
                 </div>
-                <div class="input-group p-2">
-                    <input type="password" class="form-control" name="password" placeholder="Password">
-                </div>
-                <div class="input-group p-2">
-                    <input type="password" class="form-control" name="password_confirmation" placeholder="Confirm Password">
-                </div>
+                {!! $errors->first('password', '<span class="text-danger pl-2 text-danger-size">:message</span>') !!}
                 <div class="input-group p-2">
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" value="1" name="gender" id="genderMale" value="option1" checked>
@@ -37,21 +35,39 @@
                     </div>
                 </div>
                 <div class="input-group p-2">
-                    <textarea class="form-control" placeholder="Address" name="address" rows="3"></textarea>
+                    <textarea class="form-control {{ $errors->has('address') ? 'is-invalid' : ''}}" placeholder="Address" name="address" rows="3"></textarea>
                 </div>
+                {!! $errors->first('address', '<span class="text-danger pl-2 text-danger-size">:message</span>') !!}
                 <div class="input-group p-2">
-                    <input type="text" class="form-control" name="birthday" placeholder="Date">
+                    <input type="text" class="form-control {{ $errors->has('birthday') ? 'is-invalid' : ''}}" name="birthday" placeholder="Date">
                 </div>
+                {!! $errors->first('birthday', '<span class="text-danger pl-2 text-danger-size">:message</span>') !!}
                 <div class="input-group p-2">
                     <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="profile_picture"  id="customFile">
-                        <label class="custom-file-label" for="customFile">Choose file</label>
+                        <input type="file" class="custom-file-input {{ $errors->has('profile_picture') ? 'is-invalid' : ''}}" name="profile_picture"  id="customFile">
+                        <label class="custom-file-label" for="customFile" id="customFileLabel">Choose file</label>
                     </div>
                 </div>
+                {!! $errors->first('profile_picture', '<span class="text-danger pl-2 text-danger-size">:message</span>') !!}
                 <div class="input-group p-2">
                     <input type="submit" class="btn btn-danger login-btn btn-block">
                 </div>
             </form>
         </div>
     </div>
+
+    <script>
+        var customFileInput = document.getElementById('customFile');
+        customFileInput.onchange = function(){
+            var fullPath = document.getElementById('customFile').value;
+            if (fullPath) {
+                var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+                var filename = fullPath.substring(startIndex);
+                if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+                    filename = filename.substring(1);
+                }
+                document.getElementById('customFileLabel').innerHTML = filename;
+            }
+        }
+    </script>
 @endsection
