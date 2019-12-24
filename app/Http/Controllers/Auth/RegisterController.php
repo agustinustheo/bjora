@@ -101,14 +101,15 @@ class RegisterController extends Controller
             $credentials = $request->only('email', 'password');
             if(Auth::attempt($credentials)) {
                 $user_data = User::where('email', $request->only('email'));
-                session(['user' => $user_data->value('id')]);
-                session(['name' =>  $user_data->value('name')]);
-                return redirect('/');
+                return redirect('/')->withCookie(cookie('user_cookie', $user_data->id, 120));
             }
         }
     }
 
     public function register_view(){
+        if($request->hasCookie('user_cookie')){
+            return Redirect::back();
+        }
         return view('auth.register');
     }
 }

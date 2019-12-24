@@ -38,7 +38,7 @@
                             </div>
                         </div>
                     </div>
-                    @if ($Question->status==1  && session()->has('user')  && Session::get('user')==$value->user_id)
+                    @if ($Question->status==1  && Auth::check()  && Auth::user()->id==$value->user_id)
                     <div class="d-flex">
                         <a class="d-block bg-warning text-dark rounded p-1 ml-1 answer-delete pl-2 pr-2" href="/answer/edit/{{ $value->id }}">Edit</a>
                         <a class="d-block bg-danger text-white rounded p-1 ml-1 answer-delete" href="/answer/delete/{{ $value->id }}">Delete</a>
@@ -52,7 +52,7 @@
             @endforeach
         @endif
     </div>
-    @if ($Question->status==1 && session()->has('user'))
+    @if ($Question->status==1 && Auth::check())
     <form class="border border-top-0 rounded-bottom pt-3 pr-3 pl-3 pb-2" method="POST" action="/answer/add">
         {{ csrf_field() }}
         <input type="hidden" class="form-control" name="question_id" value="{{ $Question->id }}">

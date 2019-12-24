@@ -40,7 +40,7 @@ class QuestionController extends Controller
             'question' => $request['question'],
             'status' => 1,
             'topic_id' => $request['topic'],
-            'user_id' => session('user'),
+            'user_id' => Auth::user()->id,
         ]);
         return redirect('/');
     }
@@ -126,7 +126,7 @@ class QuestionController extends Controller
         Answer::create([
             'answer' => $request['answer'],
             'question_id' => $request['question_id'],
-            'user_id' => session('user'),
+            'user_id' => Auth::user()->id,
         ]);
         return Redirect::back();
     }

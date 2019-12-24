@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use DB;
+use Cookie;
 use Redirect;
 use App\User;
 use Illuminate\Http\Request;
@@ -51,21 +52,23 @@ class LoginController extends Controller
         if($request->only('remember')!=null) $remember=True;
         if(Auth::attempt($credentials, $remember)) {
             $user_data = User::where('email', $request->only('email'));
-            session(['user' => $user_data->value('id')]);
-            session(['name' =>  $user_data->value('name')]);
-            return redirect('/');
+            if($remember) return redirect('/')->withCookie(cookie()->forever('user_cookie', $user_data->id));
+            else return redirect('/')->withCookie(cookie('user_cookie', $user_data->value('id'), 120));
         }
         else{
             return Redirect::back();
         }
     }
     
-    public function login_view(){
+    public function login_view(Request $request){
+        if($request->hasCookie('user_cookie')){
+            return Redirect::back();
+        }
         return view('auth.login');
     }
 
     public function logout(Request $request){
-        $request->session()->flush();
+        Cookie::queue(Cookie::forget('user_cookie'));
         Auth::logout();
         return redirect('/');
     }

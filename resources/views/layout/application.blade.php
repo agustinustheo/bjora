@@ -16,12 +16,12 @@
             <div class="container-navbar">
                 <div class="navbar-header d-flex align-items-center">
                     <a class="navbar-brand text-danger navbar-link" href="/">Bjora</a>
-                    @if(session()->has('user'))
+                    @if(Auth::check())
                     <a class="nav-link text-light d-block mt-1 mr-3" href="/question">My Question</a>
                     <a class="nav-link text-light d-block mt-1 mr-3" href="/inbox">Inbox</a>
                     @endif
                 </div>
-                @if(session()->has('user'))
+                @if(Auth::check())
                 <div id="navbarNav">
                     <ul class="navbar-nav navbar-align-right">
                         <li class="nav-item active">
