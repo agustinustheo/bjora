@@ -1,4 +1,4 @@
-@extends('layout.application')
+@extends('layout.manage')
 @section('content')
     <div class="pt-5">
         <a class="btn btn-danger text-white p-1" href="/question/add">

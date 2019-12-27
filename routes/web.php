@@ -24,7 +24,6 @@ Route::get('/question/edit/{id}', "QuestionController@edit_view");
 Route::post('/question/edit', "QuestionController@edit");
 Route::get('/question/delete/{id}', "QuestionController@delete");
 Route::get('/question/status/{id}', "QuestionController@toggle_status");
-Route::get('/question/master', "QuestionController@master_view");
 
 Route::get('/answer/{id}', "QuestionController@answer_view");
 Route::post('/answer/add', "QuestionController@add_answer");
@@ -32,11 +31,6 @@ Route::get('/answer/edit/{id}', "QuestionController@edit_answer_view");
 Route::post('/answer/edit', "QuestionController@edit_answer");
 
 Route::get('/answer/delete/{id}', "QuestionController@delete_answer");
-Route::get('/topic', "TopicController@topic_view");
-Route::get('/topic/add', "TopicController@add_view");
-Route::post('/topic/add', "TopicController@add");
-Route::get('/topic/edit/{id}', "TopicController@edit_view");
-Route::post('/topic/edit', "TopicController@edit");
 
 Route::get('/', "HomeController@index");
 Route::get('/search', "HomeController@search");
@@ -62,5 +56,9 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin','middleware'=>'AdminChe
         Route::get('/edit/{id}', 'TopicController@showEditTopicForm')->name('edit-topic-form');
         Route::post('/edit', 'TopicController@editTopic')->name('edit-topic');
         Route::post('/delete/{id}', 'TopicController@deleteTopic')->name('delete-topic');
+    });
+
+    Route::group(['prefix' => 'question'], function () {
+        Route::get('/all', "QuestionController@master_view")->name('view-all-question');
     });
 });

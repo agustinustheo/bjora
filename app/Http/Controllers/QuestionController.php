@@ -85,18 +85,6 @@ class QuestionController extends Controller
         $question_data = Question::where('id', $request->segment(3))->first();
         return view('question.edit')->with(['Topics'=>$data, 'Question'=>$question_data]);
     }
-    
-    protected function master_view(Request $request){
-        $question_data = Question::paginate(10);
-        $topic_data = Topic::all();
-        foreach($question_data as $value){
-            $value->user_name = User::where('id', $value->user_id)->value('name');
-            $value->topic_name = Topic::where('id', $value->topic_id)->value('name');
-        }
-        return view('question.master')->with([
-            'Questions'=> $question_data,
-        ]);
-    }
 
     protected function answer_view(Request $request){
         $question_data = Question::where('id', $request->segment(2))->first();
