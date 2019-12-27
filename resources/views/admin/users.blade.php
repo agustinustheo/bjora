@@ -25,7 +25,11 @@
             @endif
             <td>{{$user->email}}</td>
             <td>{{$user->name}}</td>
-            <td>{{$user->gender}}</td>
+            @if($user->gender === 1)
+            <td>Male</td>
+            @else
+            <td>Female</td>
+            @endif
             <td>{{$user->address}}</td>
             <td><img src="{{ URL::asset($user->profile_picture) }}" style="width:100px"></td>
             <td>{{$user->birthday}}</td>
