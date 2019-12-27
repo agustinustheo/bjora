@@ -28,6 +28,18 @@ class UserController extends Controller
         ]);
     }
 
+    protected function editUserValidation(Array $data) {
+        return Validator::make($data, [
+            'name' => ['required', 'string', 'max:100'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'role' => ['required', 'string'],
+            'password' => ['required', 'string', 'min:6', 'confirmed'],
+            'gender' => ['required', 'string'],
+            'address' => ['required', 'string'],
+            'birthday' => ['required', 'date'],
+        ]);
+    }
+
     protected function create(Array $data) {
         return User::create([
             'name' => $data['name'],
@@ -82,17 +94,21 @@ class UserController extends Controller
         $data = $request->all();
         $data['email'] = sha1(time()).$data['email'];
         $data['birthday'] = \DateTime::createFromFormat('d/m/Y', $data['birthday']);
-        $validation = $this->validator($data);
+        $validation = $this->editUserValidation($data);
         if($validation->fails()) {
             return Redirect::back()->withErrors($validation);
         } else {
             $data['email'] = substr($data['email'],40);
-            File::delete($user->profile_picture);
-
-            $file = $request->file('profile_picture');  
-            $filename = $data['email'].'-'.time().'-'.$file->getClientOriginalName();
-            $file->storeAs('public/img/profile_picture', $filename);
-            $data['profile_picture'] = 'storage/img/profile_picture/'.$filename;
+            if($request->hasFile('profile_picture')){
+                File::delete($user->profile_picture);
+                $file = $request->file('profile_picture');  
+                $filename = $data['email'].'-'.time().'-'.$file->getClientOriginalName();
+                $file->storeAs('public/img/profile_picture', $filename);
+                $data['profile_picture'] = 'storage/img/profile_picture/'.$filename;
+            }
+            else{
+                $data['profile_picture'] = $user->value('profile_picture');
+            }
             
             $user->name = $data['name'];
             $user->email = $data['email'];
