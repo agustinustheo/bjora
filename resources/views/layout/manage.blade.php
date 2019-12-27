@@ -22,11 +22,18 @@
                         <button class="dropbtn">Manage
                           <i class="fa fa-caret-down"></i>
                         </button>
-                        <div class="dropdown-content">
-                          <a href="">Manage Question</a>
-                          <a href="{{route('view-all-user')}}">Manage User</a>
-                          <a href="{{route('view-all-topic')}}">Manage Topic</a>
-                        </div>
+                        @if(Auth::user()->name == 'Admin')
+                            <div class="dropdown-content">
+                              <a href="">Manage Question</a>
+                              <a href="{{route('view-all-user')}}">Manage User</a>
+                              <a href="{{route('view-all-topic')}}">Manage Topic</a>
+                            </div>
+                        @else
+                            <div class="dropdown-content">
+                                <a href="">My Question</a>
+                                <a href="/question/add">Add Question</a>
+                            </div>
+                        @endif
                     </div> 
                     @endif
                 </div>

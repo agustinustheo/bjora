@@ -1,0 +1,27 @@
+<?php
+
+namespace App\Http\Middleware\Admin;
+
+use Closure;
+use Illuminate\Support\Facades\Auth;
+
+class AdminCheck
+{
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
+     */
+    public function handle($request, Closure $next)
+    {
+        if (Auth::check()) {
+            if(Auth::user()->name === 'Admin') {
+                return $next($request);
+            }
+            return redirect()->back();
+        }
+        return redirect()->back();
+    }
+}

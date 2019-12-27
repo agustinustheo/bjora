@@ -45,7 +45,7 @@ Route::get('/home', function () {
     return redirect('/');
 });
 
-Route::group(['namespace' => 'Admin','prefix' => 'admin'], function () {
+Route::group(['namespace' => 'Admin','prefix' => 'admin','middleware'=>'AdminCheck'], function () {
 	Route::group(['prefix' => 'user'], function () {
         Route::get('/all', 'UserController@getAllUser')->name('view-all-user');
         Route::get('/add', 'UserController@showAddUserForm')->name('add-user-form');
