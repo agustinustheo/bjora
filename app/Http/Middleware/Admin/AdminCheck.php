@@ -17,7 +17,7 @@ class AdminCheck
     public function handle($request, Closure $next)
     {
         if (Auth::check()) {
-            if(Auth::user()->name === 'Admin') {
+            if(Auth::user()->role === 1) {
                 return $next($request);
             }
             return redirect()->back();
