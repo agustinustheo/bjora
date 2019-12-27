@@ -110,6 +110,7 @@ class QuestionController extends Controller
     protected function edit_view(Request $request){
         $data = Topic::all();
         $question_data = Question::where('id', $request->segment(3))->first();
+        if(Auth::user()->role != 1 && Auth::user()->id != $question_data->user_id) return Redirect::back();
         return view('question.edit')->with(['Topics'=>$data, 'Question'=>$question_data]);
     }
 
