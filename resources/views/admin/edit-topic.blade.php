@@ -1,4 +1,4 @@
-@extends('layout.application')
+@extends('layout.manage')
 @section('content')
     <div class="center-single-div pt-5 pb-5">
         <div class="container col-md-6 bg-light rounded">

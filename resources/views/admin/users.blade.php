@@ -1,4 +1,4 @@
-@extends('layout.application')
+@extends('layout.manage')
 @section('content')
 <div class="col-md-10 mx-auto admin-page">
     <a href="{{route('add-user-form')}}" type="button" class="btn btn-danger">Add User</a>
