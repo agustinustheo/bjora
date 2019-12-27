@@ -16,7 +16,7 @@
                 <img src="{{ URL::asset($Question->profile_picture) }}">
             </div>
             <div class="ml-2">
-                <div class="text-danger">{{ $Question->user_name }}</div>
+                <a href="{{'/profile/'.$Question->user_id}}" class="text-danger">{{ $Question->user_name }}</a>
                 <div>
                     <span class="font-weight-bold text-dark">Created At:</span>
                     <span class="text-muted">{{ $Question->created_at }}</span>

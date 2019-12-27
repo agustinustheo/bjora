@@ -21,7 +21,7 @@
                         <img src="{{ URL::asset($value->profile_picture) }}">
                     </div>
                     <div class="ml-2">
-                        <div class="text-danger">{{ $value->user_name }}</div>
+                        <a href="{{'/profile/'.$value->user_id}}" class="text-danger">{{ $value->user_name }}</a>
                         <div>
                             <span class="font-weight-bold text-dark">Created At:</span>
                             <span class="text-muted">{{ $value->created_at }}</span>
