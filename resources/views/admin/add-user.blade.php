@@ -2,9 +2,9 @@
 @section('content')
     <div class="center-single-div pt-3 pb-3">
         <div class="container col-md-6 bg-light rounded">
-            <form class="form-group" method="POST" action="/register" enctype="multipart/form-data">
+            <form class="form-group" method="POST" action="{{route('add-user')}}" enctype="multipart/form-data">
                 {{ csrf_field() }}
-                <h2 class="text-center">Register</h2>
+                <h2 class="text-center">Create User</h2>
                 <div class="input-group p-2">
                     <input type="text" class="form-control {{ $errors->has('name') ? 'is-invalid' : ''}}" name="name" placeholder="Fullname">
                 </div>
@@ -13,6 +13,13 @@
                     <input type="text" class="form-control {{ $errors->has('email') ? 'is-invalid' : ''}}" name="email" placeholder="Email">
                 </div>
                 {!! $errors->first('email', '<span class="text-danger pl-2 text-danger-size">:message</span>') !!}
+                <div class="input-group p-2">
+                    <select class="form-control" name="role">
+                        <option value="Admin">Admin</option>
+                        <option value="Member">Member</option>
+                    </select>
+                </div>
+                {!! $errors->first('role', '<span class="text-danger pl-2 text-danger-size">:message</span>') !!}
                 <div class="input-group p-2">
                     <input type="password" class="form-control {{ $errors->has('password') ? 'is-invalid' : ''}}" name="password" placeholder="Password">
                 </div>

@@ -67,3 +67,23 @@
 .text-danger-size{
     font-size: 10pt;
 }
+
+/* users.blade.php */
+.user-page {
+    padding-top: 2%;
+}
+
+.user-page-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+  
+.user-page-content>th,td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+.table-action {
+    display: flex;
+}
