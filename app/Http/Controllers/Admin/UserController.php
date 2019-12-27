@@ -107,7 +107,7 @@ class UserController extends Controller
                 $data['profile_picture'] = 'storage/img/profile_picture/'.$filename;
             }
             else{
-                $data['profile_picture'] = $user->value('profile_picture');
+                $data['profile_picture'] = $user->profile_picture;
             }
             
             $user->name = $data['name'];
