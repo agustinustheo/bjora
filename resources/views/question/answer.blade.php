@@ -57,8 +57,9 @@
         {{ csrf_field() }}
         <input type="hidden" class="form-control" name="question_id" value="{{ $Question->id }}">
         <div class="input-group p-2">
-            <textarea class="form-control" placeholder="Your answer..." name="answer" rows="5"></textarea>
+            <textarea class="form-control {{ $errors->has('answer') ? 'is-invalid' : ''}}" placeholder="Your answer..." name="answer" rows="5"></textarea>
         </div>
+        {!! $errors->first('answer', '<span class="text-danger pl-2 text-danger-size">:message</span>') !!}
         <div class="input-group p-2">
             <input type="submit" class="btn btn-danger text-white" value="Answer">
         </div>

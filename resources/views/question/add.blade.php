@@ -6,8 +6,9 @@
                 {{ csrf_field() }}
                 <h2 class="text-center">Add Question</h2>
                 <div class="input-group p-2">
-                    <textarea class="form-control" placeholder="Question" name="question" rows="3"></textarea>
+                    <textarea class="form-control {{ $errors->has('question') ? 'is-invalid' : ''}}" placeholder="Question" name="question" rows="3"></textarea>
                 </div>
+                {!! $errors->first('question', '<span class="text-danger pl-2 text-danger-size">:message</span>') !!}
                 <div class="input-group p-2">
                     <select class="form-control" placeholder="Topic" name ="topic">
                         @foreach($Topics as $value)

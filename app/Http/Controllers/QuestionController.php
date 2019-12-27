@@ -10,6 +10,7 @@ use App\Answer;
 use App\Question;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class QuestionController extends Controller
@@ -35,24 +36,50 @@ class QuestionController extends Controller
         ]]);
     }
 
+    protected function questionValidator(Array $data)
+    {
+        return Validator::make($data, [
+            'question' => ['required', 'string'],
+        ]);
+    }
+
+    protected function answerValidator(Array $data)
+    {
+        return Validator::make($data, [
+            'answer' => ['required', 'string'],
+        ]);
+    }
+
     protected function add(Request $request){
         $request = $request->all();
-        Question::create([
-            'question' => $request['question'],
-            'status' => 1,
-            'topic_id' => $request['topic'],
-            'user_id' => Auth::user()->id,
-        ]);
-        return redirect('/');
+        $validation = $this->questionValidator($request);
+        if($validation->fails()) {
+            return Redirect::back()->withErrors($validation);
+        }
+        else{
+            Question::create([
+                'question' => $request['question'],
+                'status' => 1,
+                'topic_id' => $request['topic'],
+                'user_id' => Auth::user()->id,
+            ]);
+            return redirect('/');
+        }
     }
 
     protected function edit(Request $request){
         $data = $request->all();
-        Question::whereId($request->only('id'))->update([
-            'question' => $data['question'],
-            'topic_id' => $data['topic'],
-        ]);
-        return redirect('/');
+        $validation = $this->questionValidator($data);
+        if($validation->fails()) {
+            return Redirect::back()->withErrors($validation);
+        }
+        else{
+            Question::whereId($request->only('id'))->update([
+                'question' => $data['question'],
+                'topic_id' => $data['topic'],
+            ]);
+            return redirect('/');
+        }
     }
 
     protected function toggle_status(Request $request){
@@ -112,21 +139,33 @@ class QuestionController extends Controller
 
     protected function add_answer(Request $request){
         $request = $request->all();
-        Answer::create([
-            'answer' => $request['answer'],
-            'question_id' => $request['question_id'],
-            'user_id' => Auth::user()->id,
-        ]);
+        $validation = $this->answerValidator($request);
+        if($validation->fails()) {
+            return Redirect::back()->withErrors($validation);
+        }
+        else{
+            Answer::create([
+                'answer' => $request['answer'],
+                'question_id' => $request['question_id'],
+                'user_id' => Auth::user()->id,
+            ]);
+        }
         return Redirect::back();
     }
 
     protected function edit_answer(Request $request){
         $data = $request->all();
-        Answer::whereId($request->only('id'))->update([
-            'answer' => $data['answer'],
-        ]);
-        $question_id = Answer::where('id', $request->only('id'))->value('question_id');
-        return redirect("/answer/".$question_id);
+        $validation = $this->answerValidator($data);
+        if($validation->fails()) {
+            return Redirect::back()->withErrors($validation);
+        }
+        else{
+            Answer::whereId($request->only('id'))->update([
+                'answer' => $data['answer'],
+            ]);
+            $question_id = Answer::where('id', $request->only('id'))->value('question_id');
+            return redirect("/answer/".$question_id);
+        }
     }
 
     protected function delete_answer(Request $request){
