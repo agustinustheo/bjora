@@ -39,7 +39,7 @@
                 </div>
                 {!! $errors->first('address', '<span class="text-danger pl-2 text-danger-size">:message</span>') !!}
                 <div class="input-group p-2">
-                    <input type="text" class="form-control {{ $errors->has('birthday') ? 'is-invalid' : ''}}" name="birthday" placeholder="Date">
+                    <input id="dateInput" type="text" class="form-control {{ $errors->has('birthday') ? 'is-invalid' : ''}}" name="birthday" placeholder="Date">
                 </div>
                 {!! $errors->first('birthday', '<span class="text-danger pl-2 text-danger-size">:message</span>') !!}
                 <div class="input-group p-2">
@@ -56,18 +56,5 @@
         </div>
     </div>
 
-    <script>
-        var customFileInput = document.getElementById('customFile');
-        customFileInput.onchange = function(){
-            var fullPath = document.getElementById('customFile').value;
-            if (fullPath) {
-                var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
-                var filename = fullPath.substring(startIndex);
-                if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
-                    filename = filename.substring(1);
-                }
-                document.getElementById('customFileLabel').innerHTML = filename;
-            }
-        }
-    </script>
+    <script src="{{ URL::asset('js/register.js') }}"></script>
 @endsection

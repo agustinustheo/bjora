@@ -149,3 +149,6 @@
     display: flex;
     justify-content: space-evenly;
 }
+select.picker__select--month, select.picker__select--year{
+    padding: 0;
+}
