@@ -68,16 +68,21 @@
     font-size: 10pt;
 }
 
-/* users.blade.php */
-.user-page {
+/* admin page */
+.admin-page {
     padding-top: 2%;
 }
 
-.user-page-table {
+.admin-page-table {
     border-collapse: collapse;
     width: 100%;
 }
-  
+
+.admin-paginate {
+    padding-top: 3vh;
+}
+
+/* users.blade.php */
 .user-page-content>th,td {
     border: 1px solid #dddddd;
     text-align: left;
@@ -86,4 +91,22 @@
 
 .table-action {
     display: flex;
+    justify-content: space-evenly;
+    width: 12vw;
+}
+
+/* topics.blade.php */
+.topic-page-content>th,td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+.topic-name {
+    width: 60vw;
+}
+
+.table-action {
+    display: flex;
+    justify-content: space-evenly;
 }

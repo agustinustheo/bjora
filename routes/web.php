@@ -54,4 +54,13 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin'], function () {
         Route::post('/edit', 'UserController@editUser')->name('edit-user');
         Route::post('/delete/{id}', 'UserController@deleteUser')->name('delete-user');
     });
+
+    Route::group(['prefix' => 'topic'], function () {
+        Route::get('/all', 'TopicController@getAllTopic')->name('view-all-topic');
+        Route::get('/add', 'TopicController@showAddTopicForm')->name('add-topic-form');
+        Route::post('/add', 'TopicController@addTopic')->name('add-topic');
+        Route::get('/edit/{id}', 'TopicController@showEditTopicForm')->name('edit-topic-form');
+        Route::post('/edit', 'TopicController@editTopic')->name('edit-topic');
+        Route::post('/delete/{id}', 'TopicController@deleteTopic')->name('delete-topic');
+    });
 });

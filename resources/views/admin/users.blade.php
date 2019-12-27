@@ -1,9 +1,9 @@
 @extends('layout.application')
 @section('content')
-<div class="col-md-10 mx-auto user-page">
+<div class="col-md-10 mx-auto admin-page">
     <a href="{{route('add-user-form')}}" type="button" class="btn btn-danger">Add User</a>
     <h1>Manage User</h1>
-    <table class="user-page-table">
+    <table class="admin-page-table">
         <tr class="user-page-content">
           <th>#</th>
           <th>Role</th>
@@ -23,18 +23,22 @@
             <td>{{$user->name}}</td>
             <td>{{$user->gender}}</td>
             <td>{{$user->address}}</td>
-            <td style="display:flex"><img src="{{ URL::asset($user->profile_picture) }}" style="width:100px"></td>
+            <td><img src="{{ URL::asset($user->profile_picture) }}" style="width:100px"></td>
             <td>{{$user->birthday}}</td>
-            <td class="table-action">
+            <td>
+                <div class="table-action">
                     <a href="{{route('edit-user-form', ['id' => $user->id])}}" type="button" class="btn btn-warning">Edit</a>
                     <form action="{{route('delete-user', ['id' => $user->id])}}" method="POST">
                         {{ csrf_field() }}
                         <button type="submit" class="btn btn-danger">Delete</button>
                     </form>
+                </div>
             </td>
         </tr>
     @endforeach
     </table>
-    {{$users->links()}}
+    <div class="admin-paginate">
+        {{$users->links()}}
+    </div>
 </div>
 @endsection
