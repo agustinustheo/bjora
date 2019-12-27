@@ -15,12 +15,12 @@
                 {!! $errors->first('email', '<span class="text-danger pl-2 text-danger-size">:message</span>') !!}
                 <div class="input-group p-2">
                     <select class="form-control" name="role">
-                        @if ($user->role == 'Admin')
-                            <option value="Admin" selected>Admin</option>
-                            <option value="Member">Member</option>
+                        @if ($user->role == 1)
+                            <option value="1" selected>Admin</option>
+                            <option value="2">Member</option>
                         @else
-                            <option value="Admin">Admin</option>
-                            <option value="Member"selected>Member</option>
+                            <option value="1">Admin</option>
+                            <option value="2"selected>Member</option>
                         @endif
                     </select>
                 </div>
@@ -34,20 +34,20 @@
                 {!! $errors->first('password', '<span class="text-danger pl-2 text-danger-size">:message</span>') !!}
                 <div class="input-group p-2">
                     <div class="form-check form-check-inline">
-                        @if ($user->gender == 'Male')
-                            <input class="form-check-input" type="radio" value="Male" name="gender" id="genderMale" value="option1" checked>
+                        @if ($user->gender == 1)
+                            <input class="form-check-input" type="radio" value="1" name="gender" id="genderMale" value="option1" checked>
                         @else
-                        <input class="form-check-input" type="radio" value="Male" name="gender" id="genderMale" value="option1">
+                        <input class="form-check-input" type="radio" value="1" name="gender" id="genderMale" value="option1">
                         @endif
                         <label class="form-check-label" for="genderMale">
                             Male
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        @if ($user->gender == 'Female')
-                            <input class="form-check-input" type="radio" value="Female" name="gender" id="genderFemale" value="option1" checked>
+                        @if ($user->gender == 2)
+                            <input class="form-check-input" type="radio" value="2" name="gender" id="genderFemale" value="option1" checked>
                         @else
-                        <input class="form-check-input" type="radio" value="Female" name="gender" id="genderFemale" value="option1">
+                        <input class="form-check-input" type="radio" value="2" name="gender" id="genderFemale" value="option1">
                         @endif
                         <label class="form-check-label" for="genderFemale">
                             Female
@@ -65,7 +65,7 @@
                 <div class="input-group p-2">
                     <div class="custom-file">
                         <input type="file" class="custom-file-input {{ $errors->has('profile_picture') ? 'is-invalid' : ''}}" name="profile_picture"  id="customFile">
-                        <label class="custom-file-label" for="customFile" id="customFileLabel">Choose file</label>
+                        <label class="custom-file-label" for="customFile" id="customFileLabel">{{basename($user->profile_picture)}}</label>
                     </div>
                 </div>
                 {!! $errors->first('profile_picture', '<span class="text-danger pl-2 text-danger-size">:message</span>') !!}
