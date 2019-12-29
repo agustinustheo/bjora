@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use DB;
-use Cookie;
 use Redirect;
 use App\User;
 use Illuminate\Http\Request;
@@ -11,6 +10,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Cookie;
 
 class LoginController extends Controller
 {
@@ -51,9 +51,18 @@ class LoginController extends Controller
         $remember=False;
         if($request->only('remember')!=null) $remember=True;
         if(Auth::attempt($credentials, $remember)) {
-            $user_data = User::where('email', $request->only('email'));
-            if($remember) return redirect('/')->withCookie(cookie()->forever('user_cookie', $user_data->id));
-            else return redirect('/')->withCookie(cookie('user_cookie', $user_data->value('id'), 120));
+            $user_data = User::where('email', $request->only('email'))->first();
+            if($remember) {
+                //cookie is made to last for 2 hours
+                //since the docx doesnt specify the duration
+                //if you want to make it last forever, just remove the 3rd parameter
+                $user_email = Cookie::make('user_email',$user_data->email,120);
+                $user_password = Cookie::make('user_password',$user_data->password,120);
+                $cookies = [$user_email, $user_password];
+                return redirect('/')->withCookies($cookies);
+            }
+
+            else return redirect('/');
         }
         else{
             return Redirect::back();
@@ -61,15 +70,28 @@ class LoginController extends Controller
     }
     
     public function login_view(Request $request){
-        if($request->hasCookie('user_cookie')){
+        if($request->hasCookie('user_email') && $request->hasCookie('user_password')){
             return Redirect::back();
         }
         return view('auth.login');
     }
 
     public function logout(Request $request){
-        Cookie::queue(Cookie::forget('user_cookie'));
         Auth::logout();
-        return redirect('/');
+
+        //laboratory assistant's code
+        // $response = \Response::make(redirect('/login'));
+        // $response->cookie(\Cookie::forget('user_email'));
+        // $response->cookie(\Cookie::forget('user_password'));
+        // return $response;
+
+        //cookie is removed when user clicks on another page
+        //on assistant's code, the page is redirected 2 times,
+        //1 to some kind of error page, and the second to the actual redirect
+        //hence the cookie is removed on the final redirect
+        $user_email = Cookie::forget('user_email');
+        $user_password = Cookie::forget('user_password');
+        $cookies = [$user_email, $user_password];
+        return redirect('/login')->withCookies($cookies);
     }
 }
