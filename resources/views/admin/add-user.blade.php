@@ -29,13 +29,13 @@
                 {!! $errors->first('password', '<span class="text-danger pl-2 text-danger-size">:message</span>') !!}
                 <div class="input-group p-2">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="Male" name="gender" id="genderMale" value="option1" checked>
+                        <input class="form-check-input" type="radio" value="1" name="gender" id="genderMale" value="option1" checked>
                         <label class="form-check-label" for="genderMale">
                             Male
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="Female" name="gender" id="genderFemale" value="option1">
+                        <input class="form-check-input" type="radio" value="2" name="gender" id="genderFemale" value="option1">
                         <label class="form-check-label" for="genderFemale">
                             Female
                         </label>
