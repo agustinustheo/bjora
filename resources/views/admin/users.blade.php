@@ -18,14 +18,14 @@
     @foreach ($users as $i=>$user)
         <tr class="user-page-content">
             <td>{{$i+1}}</td>
-            @if($user->role === 1)
+            @if($user->role == 1)
             <td>Admin</td>
             @else
             <td>Member</td>
             @endif
             <td>{{$user->email}}</td>
             <td>{{$user->name}}</td>
-            @if($user->gender === 1)
+            @if($user->gender == 1)
             <td>Male</td>
             @else
             <td>Female</td>

@@ -15,8 +15,8 @@
                 {!! $errors->first('email', '<span class="text-danger pl-2 text-danger-size">:message</span>') !!}
                 <div class="input-group p-2">
                     <select class="form-control" name="role">
-                        <option value="Admin">Admin</option>
-                        <option value="Member">Member</option>
+                        <option value="1">Admin</option>
+                        <option value="2">Member</option>
                     </select>
                 </div>
                 {!! $errors->first('role', '<span class="text-danger pl-2 text-danger-size">:message</span>') !!}

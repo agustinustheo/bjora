@@ -24,7 +24,7 @@
                         <button class="dropbtn">Manage
                           <i class="fa fa-caret-down"></i>
                         </button>
-                        @if(Auth::user()->role === 1)
+                        @if(Auth::user()->role == 1)
                             <div class="dropdown-content">
                               <a href="{{route('view-all-question')}}">Manage Question</a>
                               <a href="{{route('view-all-user')}}">Manage User</a>
