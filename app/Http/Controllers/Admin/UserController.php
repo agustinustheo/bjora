@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Redirect;
 
 class UserController extends Controller
 {
+    //validator on admin side of add user
     protected function validator(Array $data) {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:100'],
@@ -28,6 +29,7 @@ class UserController extends Controller
         ]);
     }
 
+    //validator on admin side of edit user
     protected function editUserValidation(Array $data) {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:100'],
@@ -40,6 +42,7 @@ class UserController extends Controller
         ]);
     }
 
+    //store all data into object of user model
     protected function create(Array $data) {
         return User::create([
             'name' => $data['name'],
@@ -53,51 +56,70 @@ class UserController extends Controller
         ]);
     }
 
+    //get all user data and paginate it by tens
     public function getAllUser() {
         $users = User::paginate(10); 
         
+        //then return the data to be shown in the manage user page
         return view('admin.users', compact('users'));
     }
 
+    //return to blade of add user form page
     public function showAddUserForm() {
         return view('admin.add-user');
     }
 
+    //method to add user
     public function addUser(Request $request) {
+        //store all request data to data array
         $data = $request->all();
         $data['birthday'] = \DateTime::createFromFormat('d/m/Y', $data['birthday']);
         $validation = $this->validator($data);
+        //if validator fails, return back to add user form with the error message
         if($validation->fails()) {
             return Redirect::back()->withErrors($validation);
         }
         else{
+            //manage profile picture file name and store location
             $file = $request->file('profile_picture');  
             $filename = $data['email'].'-'.time().'-'.$file->getClientOriginalName();
             $file->storeAs('public/img/profile_picture', $filename);
             $data['profile_picture'] = 'storage/img/profile_picture/'.$filename;
+            //store all user data
             $user = $this->create($data);
+            //redirect back to manage user page
             return redirect()->route('view-all-user');
         }
     }
 
+    //method to show edit user form
     public function showEditUserForm($id) {
+        //find user that wants to be edited by his/her id
         $user = User::find($id);
         
+        //format the date time by converting it into Carbon object then formatting it
         $user->birthday = Carbon::parse($user->birthday)->format('d/m/Y');
 
+        //send the user data to edit user form
         return view('admin.edit-user', compact('user'));
     }
 
+    //method to edit the user
     public function editUser(Request $request) {
+        //the same method ass addUser wont be commented again
         $user = User::find($request->id);
 
         $data = $request->all();
+        //bypass validator on unique email, since the old user email is not removed yet
+        //new email is appended by an encryption of current time
+        //so the encryption will always be different
         $data['email'] = sha1(time()).$data['email'];
         $data['birthday'] = \DateTime::createFromFormat('d/m/Y', $data['birthday']);
         $validation = $this->editUserValidation($data);
         if($validation->fails()) {
             return Redirect::back()->withErrors($validation);
         } else {
+            //remove the unique hash encryption
             $data['email'] = substr($data['email'],40);
             if($request->hasFile('profile_picture')){
                 File::delete($user->profile_picture);
@@ -110,6 +132,7 @@ class UserController extends Controller
                 $data['profile_picture'] = $user->profile_picture;
             }
             
+            //overwrite old user data
             $user->name = $data['name'];
             $user->email = $data['email'];
             $user->role = $data['role'];
@@ -120,15 +143,21 @@ class UserController extends Controller
             $user->birthday = $data['birthday'];
             $user->save();
 
+            //redirect to manage user page
             return redirect()->route('view-all-user');
         }
     }
 
+    //method to delete user
     public function deleteUser($id) {
+        //find user data that wants to be deleted by id
         $user = User::find($id);
+        //remove user profile picture from storage
         File::delete($user->profile_picture);
+        //remove user data from database
         $user->delete();
 
+        //redirect to manage user page
         return redirect()->route('view-all-user');
     }
 }
