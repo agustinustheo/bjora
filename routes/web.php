@@ -11,11 +11,18 @@
 |
 */
 
-Route::get('/login', [ 'as' => 'login', 'uses' => "Auth\LoginController@login_view"]);
+Route::get('/login', ['as' => 'login', 'uses' => "Auth\LoginController@login_view"]);
 Route::post('/login', "Auth\LoginController@login");
 Route::get('/logout', "Auth\LoginController@logout");
 Route::get('/register', "Auth\RegisterController@register_view");
 Route::post('/register', "Auth\RegisterController@register");
+
+Route::get('/profile', "UserController@view");
+Route::get('/profile/edit', "UserController@edit_profile_view");
+Route::post('/profile/edit', "UserController@edit_profile");
+Route::get('/profile/{id}', "UserController@profile_view");
+Route::post('/profile/message', "UserController@send_message");
+Route::get('/inbox', "UserController@inbox_view");
 
 Route::get('/question', "QuestionController@question_view");
 Route::get('/question/add', "QuestionController@add_view");
@@ -39,8 +46,8 @@ Route::get('/home', function () {
     return redirect('/');
 });
 
-Route::group(['namespace' => 'Admin','prefix' => 'admin','middleware'=>'AdminCheck'], function () {
-	Route::group(['prefix' => 'user'], function () {
+Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'AdminCheck'], function () {
+    Route::group(['prefix' => 'user'], function () {
         Route::get('/all', 'UserController@getAllUser')->name('view-all-user');
         Route::get('/add', 'UserController@showAddUserForm')->name('add-user-form');
         Route::post('/add', 'UserController@addUser')->name('add-user');
