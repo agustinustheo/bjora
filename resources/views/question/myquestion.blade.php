@@ -1,6 +1,6 @@
 @extends('layout.application')
 @section('content')
-@if($->count()>0)
+@if($question_data->count()>0)
 @foreach($question_data as $data)
 <div class="border rounded-top p-3 mt-4">
         <div class="d-flex align-items-center justify-content-between">
@@ -15,10 +15,10 @@
         <h3>{{ $data->question }}</h3>
         <div class="d-flex align-items-center mb-3">
             <div class="rounded-circle bg-dark display-picture">
-                <img src="{{ URL::asset($user->profile_picture) }}">
+                <img src="{{ URL::asset(Auth::user()->profile_picture) }}">
             </div>
             <div class="ml-2">
-                <a href="{{'/profile/'.$user->id}}" class="text-danger">{{ $user->name }}</a>
+                <a href="{{'/profile/'.Auth::user()->id}}" class="text-danger">{{ Auth::user()->name }}</a>
                 <div>
                     <span class="font-weight-bold text-dark">Created At:</span>
                     <span class="text-muted">{{ $data->created_at }}</span>
@@ -28,5 +28,7 @@
 
 </div>
 @endforeach
+@else
+<h1>No Questions Found</h1>
 @endif
 @endsection

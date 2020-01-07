@@ -11,6 +11,7 @@ use App\Question;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
@@ -46,14 +47,12 @@ class UserController extends Controller
      */
     protected function validator(array $data)
     {
-        $users = Auth::user();
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:100'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users' . $users->id],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . Auth::user()->id],
             'password' => ['required', 'string', 'min:6', 'confirmed'],
             'gender' => ['required', 'string'],
             'address' => ['required', 'string'],
-            'profile_picture' => ['required'],
             'birthday' => ['required', 'date'],
         ]);
     }
@@ -64,19 +63,6 @@ class UserController extends Controller
      * @param  array  $data
      * @return \App\User
      */
-    protected function create(array $data)
-    {
-        return User::where('id', 'LIKE', Auth::user()->id)->updateOrCreate([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'role' => 2,
-            'password' => Hash::make($data['password']),
-            'gender' => $data['gender'],
-            'address' => $data['address'],
-            'profile_picture' => $data['profile_picture'],
-            'birthday' => $data['birthday'],
-        ]);
-    }
 
     protected function messageValidator(array $data)
     {
@@ -84,9 +70,6 @@ class UserController extends Controller
             'message' => ['required', 'string'],
         ]);
     }
-
-
-
     protected function view()
     {
         $user = Auth::user();
@@ -96,7 +79,7 @@ class UserController extends Controller
     protected function edit_profile_view()
     {
         $user = Auth::user();
-        echo $user;
+        $user->birthday = \DateTime::createFromFormat('Y-m-d', $user->birthday)->format('d/m/Y');
         return view('user.edit_profile', compact('user'));
     }
 
@@ -108,27 +91,34 @@ class UserController extends Controller
 
     protected function edit_profile(Request $request)
     {
-
-        $user = User::find(auth::user()->id);
+        $user = User::find(Auth::user()->id);
         $data = $request->all();
-
-        // echo $user;
-        // dd($user);
-        // dd($request);
         $data['birthday'] = \DateTime::createFromFormat('d/m/Y', $data['birthday']);
-        // $validation = $this->validator($data);
-        // if ($validation->fails()) {
-        //     return Redirect::back()->withErrors($validation);
-        // } else {
-        $file = $request->file('profile_picture');
-        $filename = $data['email'] . '-' . time() . '-' . $file->getClientOriginalName();
-        $file->storeAs('public/img/profile_picture', $filename);
-        $data['profile_picture'] = 'storage/img/profile_picture/' . $filename;
-        $user = $this->create($data);
-        //$credentials = $request->only('email', 'password');
-        // }
-    }
+        $validation = $this->validator($data);
+        if ($validation->fails()) {
+            return Redirect::back()->withErrors($validation);
+        } else {
+            if ($request->hasFile('profile_picture')) {
+                File::delete($user->profile_picture);
+                $file = $request->file('profile_picture');
+                $filename = $data['email'] . '-' . time() . '-' . $file->getClientOriginalName();
+                $file->storeAs('public/img/profile_picture', $filename);
+                $data['profile_picture'] = 'storage/img/profile_picture/' . $filename;
+                $user->profile_picture = $data['profile_picture'];
+            }
 
+            //overwrite old user data
+            $user->name = $data['name'];
+            $user->email = $data['email'];
+            $user->password = Hash::make($data['password']);
+            $user->gender = $data['gender'];
+            $user->address = $data['address'];
+            $user->birthday = $data['birthday'];
+            $user->save();
+        }
+        $user = User::find(Auth::user()->id);
+        return view('user.profile', compact('user'));
+    }
 
     protected function send_message(Request $request)
     {
@@ -149,11 +139,11 @@ class UserController extends Controller
     protected function inbox_view()
     {
         $data_message = Message::where('receiver_id', 'Like', Auth::user()->id)->get();
-        // $index_sender = $data_message->sender_id;
-        // $data_message->sender_name = User::where('id', 'Like', $data_message->sender_id)->value('name');
-        // $sender_profile_picture = User::where('id', 'Like', $data_message->sender_id)->value('profile_picture');
-        // $data_mesage =
-
+        foreach ($data_message as $key) {
+            $index_sender = $key->value('sender_id');
+            $key->user_name = User::where('id', 'Like', $key->value('sender_id'))->value('name');
+            $key->profile_picture = User::where('id', 'Like', $key->value('sender_id'))->value('profile_picture');
+        }
 
         return view('user.inbox', compact('data_message'));
     }

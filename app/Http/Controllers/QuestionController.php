@@ -102,20 +102,11 @@ class QuestionController extends Controller
 
     protected function question_view()
     {
-        $question_data = Question::find('id', Auth::user()->id);
-        $question_data->user_name = User::where('id', 'Like', $question_data->user_id)->value('name');
-        $question_data->profile_picture = User::where('id', 'Like', $question_data->user_id)->value('profile_picture');
-        $question_data->topic_name = Topic::where('id', $question_data->topic_id)->value('name');
-        $user = Auth::user();
+        $question_data = Question::where('user_id', Auth::user()->id)->get();
         foreach ($question_data as $data) {
             $data->topic_name = Topic::where('id', $data->topic_id)->value('name');
-            // $data->profile_name = User::where('id', Auth::user()->id)->value('');
         }
-
-
-
-
-        return view('question.myquestion', compact('question_data', 'user'));
+        return view('question.myquestion', compact('question_data'));
     }
 
     protected function add_view()

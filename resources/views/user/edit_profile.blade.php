@@ -45,7 +45,7 @@
                 <div class="input-group p-2">
                     <div class="custom-file">
                         <input type="file" class="custom-file-input {{ $errors->has('profile_picture') ? 'is-invalid' : ''}}" name="profile_picture"  id="customFile">
-                        <label class="custom-file-label" for="customFile" id="customFileLabel">Choose file</label>
+                        <label class="custom-file-label" for="customFile" id="customFileLabel">{{basename($user->profile_picture)}}</label>
                     </div>
                 </div>
                 {!! $errors->first('profile_picture', '<span class="text-danger pl-2 text-danger-size">:message</span>') !!}
