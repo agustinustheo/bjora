@@ -3,25 +3,28 @@
 
 <br><br>
 <div class="border rounded p-3 mb-3">
-    <div class="d-flex align-items-center">
-        <div class="rounded-circle bg-dark display-picture">
-            <img src="{{ URL::asset($user->profile_picture) }}">
-        </div>
-        <div class="ml-2">
-            <h3>{{ $user->name }}</h3>
-            <div>
-                <span>{{  $user->email  }}</span><br>
-               <span>{{  $user->address  }}</span> <br>
-                <span>{{  $user->birthday  }}</span>
+    <div class="d-flex align-items-start justify-content-between">
+        <div class="d-flex align-items-center">
+            <div class="rounded bg-dark display-picture profile-display-pic">
+                <img src="{{ URL::asset($user->profile_picture) }}">
             </div>
-            @if (Auth::check()  && Auth::user()->id==$user->id)
-            <div class="d-flex">
-                <a class="d-block bg-warning text-dark rounded p-1 ml-1 answer-delete pl-2 pr-2" href="/profile/edit">Update Profile</a>
+            <div class="ml-2">
+                <h3>{{ $user->name }}</h3>
+                <div>
+                    <span>{{  $user->email  }}</span>
+                    <br>
+                    <span>{{  $user->address  }}</span>
+                    <br>
+                    <span>{{  $user->birthday  }}</span>
+                </div>
             </div>
-            @endif
         </div>
+        @if (Auth::check()  && Auth::user()->id==$user->id)
+        <a class="btn btn-danger text-white mt-2" href="/profile/edit">
+            Update Profile
+        </a>
+        @endif
     </div>
-
 </div>
 
 @if (Auth::check() && Auth::user()->id!=$user->id)

@@ -23,6 +23,7 @@ Route::post('/profile/edit', "UserController@edit_profile");
 Route::get('/profile/{id}', "UserController@profile_view");
 Route::post('/profile/message', "UserController@send_message");
 Route::get('/inbox', "UserController@inbox_view");
+Route::get('/inbox/delete/{id}', 'UserController@delete_inbox');
 
 Route::get('/question', "QuestionController@question_view");
 Route::get('/question/add', "QuestionController@add_view");

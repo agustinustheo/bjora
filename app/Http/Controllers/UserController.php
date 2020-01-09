@@ -79,7 +79,7 @@ class UserController extends Controller
     protected function edit_profile_view()
     {
         $user = Auth::user();
-        $user->birthday = \DateTime::createFromFormat('Y-m-d', $user->birthday)->format('d/m/Y');
+        $user->birthday = \DateTime::createFromFormat('Y-m-d h:i:s', $user->birthday)->format('d/m/Y');
         return view('user.edit_profile', compact('user'));
     }
 
@@ -138,14 +138,22 @@ class UserController extends Controller
 
     protected function inbox_view()
     {
-        $data_message = Message::where('receiver_id', 'Like', Auth::user()->id)->get();
+        $data_message = Message::where('receiver_id', Auth::user()->id)->paginate(10);
         foreach ($data_message as $key) {
-            $index_sender = $key->value('sender_id');
-            $key->user_name = User::where('id', 'Like', $key->value('sender_id'))->value('name');
-            $key->profile_picture = User::where('id', 'Like', $key->value('sender_id'))->value('profile_picture');
+            $key->user_name = User::where('id', $key->sender_id)->value('name');
+            $key->profile_picture = User::where('id', $key->sender_id)->value('profile_picture');
         }
 
         return view('user.inbox', compact('data_message'));
+    }
+    
+    protected function delete_inbox(Request $request)
+    {
+        $message = Message::find($request->segment(3));
+        if($message->receiver_id == Auth::user()->id){
+            $message->delete();
+        }
+        return Redirect::back();
     }
 
     protected function myquestion_view()

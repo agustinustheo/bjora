@@ -102,7 +102,7 @@ class QuestionController extends Controller
 
     protected function question_view()
     {
-        $question_data = Question::where('user_id', Auth::user()->id)->get();
+        $question_data = Question::where('user_id', Auth::user()->id)->paginate(10);
         foreach ($question_data as $data) {
             $data->topic_name = Topic::where('id', $data->topic_id)->value('name');
         }

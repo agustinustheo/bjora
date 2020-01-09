@@ -152,3 +152,8 @@
 select.picker__select--month, select.picker__select--year{
     padding: 0;
 }
+.profile-display-pic{
+    width: 90px;
+    height: 90px;
+    margin-right: 10px;
+}
