@@ -32,6 +32,6 @@
             </div>
         </div>
         @endforeach
+        {{ $question_data->links() }}
     @endif
-    {{ $Questions->links() }}
 @endsection
