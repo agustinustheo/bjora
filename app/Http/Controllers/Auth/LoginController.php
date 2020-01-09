@@ -46,9 +46,11 @@ class LoginController extends Controller
         ]]);
     }
 
+    // method to do login
     protected function login(Request $request){
         $credentials = $request->only('email', 'password');
         $remember=False;
+        // set remember me to true
         if($request->only('remember')!=null) $remember=True;
         if(Auth::attempt($credentials, $remember)) {
             $user_data = User::where('email', $request->only('email'))->first();
@@ -69,6 +71,7 @@ class LoginController extends Controller
         }
     }
     
+    // method to show login view
     public function login_view(Request $request){
         if($request->hasCookie('user_email') && $request->hasCookie('user_password')){
             return Redirect::back();

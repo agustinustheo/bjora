@@ -52,8 +52,10 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
+    // method to validate registration inputs
     protected function validator(Array $data)
     {
+        // automatically returns validation errors
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:100'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -71,8 +73,10 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\User
      */
+    // method to create user
     protected function create(Array $data)
     {
+        // creates user using model
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
@@ -85,20 +89,27 @@ class RegisterController extends Controller
         ]);
     }
 
+    // method to registrater user
     protected function register(Request $request){
         $data = $request->all();
         $data['birthday'] = \DateTime::createFromFormat('d/m/Y', $data['birthday']);
         $validation = $this->validator($data);
+        // validate and redirect if failed
         if($validation->fails()) {
             return Redirect::back()->withErrors($validation);
         }
         else{
+            // get file from file input
             $file = $request->file('profile_picture');  
+            // get filename
             $filename = $data['email'].'-'.time().'-'.$file->getClientOriginalName();
+            // save file in storage
             $file->storeAs('public/img/profile_picture', $filename);
             $data['profile_picture'] = 'storage/img/profile_picture/'.$filename;
+            // create data
             $user = $this->create($data);
             $credentials = $request->only('email', 'password');
+            // save credentials
             if(Auth::attempt($credentials)) {
                 $user_data = User::where('email', $request->only('email'));
                 return redirect('/')->withCookie(cookie('user_cookie', $user_data->value('id'), 120));
@@ -106,10 +117,13 @@ class RegisterController extends Controller
         }
     }
 
+    // method to registration view
     public function register_view(Request $request){
+        // checking cookie if cookie exists redirect to previous page
         if($request->hasCookie('user_cookie')){
             return Redirect::back();
         }
+        // else redirect to registration view
         return view('auth.register');
     }
 }
