@@ -13,6 +13,8 @@ use App\Http\Controllers\Controller;
 
 class QuestionController extends Controller
 {
+    //get add question and topic
+    //then return tho the edit question view
     protected function master_view(Request $request){
         $question_data = Question::paginate(10);
         $topic_data = Topic::all();
