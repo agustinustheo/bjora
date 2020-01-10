@@ -14,7 +14,7 @@
                 </div>
                 {!! $errors->first('email', '<span class="text-danger pl-2 text-danger-size">:message</span>') !!}
                 <div class="input-group p-2">
-                    <input type="password" class="form-control {{ $errors->has('password') ? 'is-invalid' : ''}}" name="password" value="Password">
+                    <input type="password" class="form-control {{ $errors->has('password') ? 'is-invalid' : ''}}" name="password" placeholder="Password">
                 </div>
                 <div class="input-group p-2">
                     <input type="password" class="form-control {{ $errors->has('password') ? 'is-invalid' : ''}}" name="password_confirmation" placeholder="Confirm Password">

@@ -88,8 +88,9 @@ class UserController extends Controller
     {
         // get user data from auth
         $user = Auth::user();
+        // dd($user->birthday);
         // change date format
-        $user->birthday = \DateTime::createFromFormat('Y-m-d H:i:s', $user->birthday)->format('d/m/Y');
+        $user->birthday = \DateTime::createFromFormat('Y-m-d', $user->birthday)->format('d/m/Y');
         return view('user.edit_profile', compact('user'));
     }
 
