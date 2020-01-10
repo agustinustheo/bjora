@@ -55,11 +55,10 @@ class LoginController extends Controller
         if(Auth::attempt($credentials, $remember)) {
             $user_data = User::where('email', $request->only('email'))->first();
             if($remember) {
-                //cookie is made to last for 2 hours
-                //since the docx doesnt specify the duration
-                //if you want to make it last forever, just remove the 3rd parameter
-                $user_email = Cookie::make('user_email',$user_data->email,120);
-                $user_password = Cookie::make('user_password',$user_data->password,120);
+                //if you want cookie to last for a duration
+                //just add an int (minutes) as a third parameter
+                $user_email = Cookie::make('user_email',$user_data->email);
+                $user_password = Cookie::make('user_password',$user_data->password);
                 $cookies = [$user_email, $user_password];
                 return redirect('/')->withCookies($cookies);
             }
