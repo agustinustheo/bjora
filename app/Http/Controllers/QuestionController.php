@@ -36,6 +36,7 @@ class QuestionController extends Controller
         ]]);
     }
 
+    //validator on user side of add question
     protected function questionValidator(array $data)
     {
         return Validator::make($data, [
@@ -43,6 +44,7 @@ class QuestionController extends Controller
         ]);
     }
 
+    //validator on user side of answer question
     protected function answerValidator(array $data)
     {
         return Validator::make($data, [
@@ -50,6 +52,7 @@ class QuestionController extends Controller
         ]);
     }
 
+    //receive request and add the data to question table
     protected function add(Request $request)
     {
         $request = $request->all();
@@ -67,6 +70,7 @@ class QuestionController extends Controller
         }
     }
 
+    //receive request, search question by id and update the data
     protected function edit(Request $request)
     {
         $data = $request->all();
@@ -82,6 +86,7 @@ class QuestionController extends Controller
         }
     }
 
+    //change status for question
     protected function toggle_status(Request $request)
     {
         $question = Question::find($request->segment(3));
@@ -93,6 +98,7 @@ class QuestionController extends Controller
         return Redirect::back();
     }
 
+    //find question by id and delete it
     protected function delete(Request $request)
     {
         $question = Question::find($request->segment(3));
@@ -100,6 +106,7 @@ class QuestionController extends Controller
         return Redirect::back();
     }
 
+    //get all question asked by logged in user and it's topic and return to my question view
     protected function question_view()
     {
         $question_data = Question::where('user_id', Auth::user()->id)->paginate(10);
@@ -109,12 +116,15 @@ class QuestionController extends Controller
         return view('question.myquestion', compact('question_data'));
     }
 
+    //get all topics and return to add question page
     protected function add_view()
     {
         $data = Topic::all();
         return view('question.add')->with(['Topics' => $data]);
     }
 
+    //get all topic and question data by id
+    //then update question data by request on form
     protected function edit_view(Request $request)
     {
         $data = Topic::all();
@@ -123,6 +133,7 @@ class QuestionController extends Controller
         return view('question.edit')->with(['Topics' => $data, 'Question' => $question_data]);
     }
 
+    //get all datas needed for answer question then return to answer view page
     protected function answer_view(Request $request)
     {
         $question_data = Question::where('id', $request->segment(2))->first();
@@ -143,12 +154,14 @@ class QuestionController extends Controller
         ]);
     }
 
+    //get question data by id and return the data to edit answer page
     protected function edit_answer_view(Request $request)
     {
         $answer_data = Answer::where('id', $request->segment(3))->first();
         return view('question.edit_answer')->with(['Answer' => $answer_data]);
     }
 
+    //receive data from add answer form and add the data
     protected function add_answer(Request $request)
     {
         $request = $request->all();
@@ -165,6 +178,7 @@ class QuestionController extends Controller
         return Redirect::back();
     }
 
+    //get answer data by id and update based on data received from form
     protected function edit_answer(Request $request)
     {
         $data = $request->all();
@@ -180,6 +194,7 @@ class QuestionController extends Controller
         }
     }
 
+    //find data by id and delete the data
     protected function delete_answer(Request $request)
     {
         $answer = Answer::find($request->segment(3));
